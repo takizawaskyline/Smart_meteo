@@ -1,0 +1,77 @@
+# Базовые настройки системы
+default_config:
+
+# История для графиков
+history:
+recorder:
+  purge_keep_days: 7
+
+mqtt:
+  sensor:
+    # --- ТЕМПЕРАТУРА ---
+    - name: "bme280_temp"
+      unique_id: "zahar_temp_01"
+      state_topic: "user_159400dd/sens_val"
+      value_template: "{{ value_json.sens_val.temp }}"
+      unit_of_measurement: "°C"
+      device_class: "temperature"
+      state_class: "measurement"
+
+    # --- ВЛАЖНОСТЬ ---
+    - name: "bme280_hum"
+      unique_id: "zahar_hum_01"
+      state_topic: "user_159400dd/sens_val"
+      value_template: "{{ value_json.sens_val.hum }}"
+      unit_of_measurement: "%"
+      device_class: "humidity"
+      state_class: "measurement"
+
+    # --- ДАВЛЕНИЕ ---
+    - name: "bme280_pres"
+      unique_id: "zahar_pres_01"
+      state_topic: "user_159400dd/sens_val"
+      value_template: "{{ value_json.sens_val.pressure }}"
+      unit_of_measurement: "mmHg"
+      device_class: "pressure"
+      state_class: "measurement"
+
+    # --- MQ2: ВОДОРОД ---
+    - name: "mq2_hydrogen"
+      unique_id: "zahar_mq2_h2"
+      state_topic: "user_159400dd/sens_val"
+      value_template: "{{ value_json.sens_val.hydrogen }}"
+      unit_of_measurement: "ppm"
+      state_class: "measurement"
+      icon: "mdi:atom"
+
+    # --- MQ2: ДЫМ ---
+    - name: "mq2_smoke"
+      unique_id: "zahar_mq2_smoke"
+      state_topic: "user_159400dd/sens_val"
+      value_template: "{{ value_json.sens_val.smoke }}"
+      unit_of_measurement: "ppm"
+      state_class: "measurement"
+      icon: "mdi:smoke-detector"
+
+    # --- MQ2: МЕТАН ---
+    - name: "mq2_methane"
+      unique_id: "zahar_mq2_ch4"
+      state_topic: "user_159400dd/sens_val"
+      value_template: "{{ value_json.sens_val.methane }}"
+      unit_of_measurement: "ppm"
+      state_class: "measurement"
+      icon: "mdi:fireplace"
+
+    # --- MQ2: ПРОПАН (LPG) ---
+    - name: "mq2_lpg"
+      unique_id: "zahar_mq2_lpg"
+      state_topic: "user_159400dd/sens_val"
+      value_template: "{{ value_json.sens_val.LPG }}"
+      unit_of_measurement: "ppm"
+      state_class: "measurement"
+      icon: "mdi:gas-cylinder"
+
+# Стандартные файлы
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
