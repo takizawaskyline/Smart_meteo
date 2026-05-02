@@ -126,6 +126,8 @@ void otladka() {
     Serial.print(mq2.readHydrogen());
     Serial.println(" ppm ");
     //delay(100);
+    Serial.print("Calibrated: "); Serial.println(mq2.isCalibrated());
+    Serial.print("Heating Completed: "); Serial.println(mq2.heatingCompleted());
   }
 }
 
