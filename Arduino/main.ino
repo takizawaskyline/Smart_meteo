@@ -125,7 +125,7 @@ void otladka() {
 
   // давление
   Serial.print("Pressure: ");
-  Serial.println(bme.readPressure() / 133,32);
+  Serial.println(bme.readPressure() / 133.32);
 
   Serial.print("Ro = ");
   Serial.println(mq2.getRo());
