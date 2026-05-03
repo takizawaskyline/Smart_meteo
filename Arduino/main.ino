@@ -31,12 +31,11 @@ PubSubClient client(espClient);
 bool mqttConnected = false;  // Флаг подключения
 
 #define PIN_MQ2 34
-#define PIN_MQ2_HEATER  26
-MQ2 mq2(PIN_MQ2, PIN_MQ2_HEATER);
+
+MQ2 mq2(PIN_MQ2);
 
 void setup() {
-  mq2.heaterPwrHigh();
-  
+  mq2.calibrate();
   bme.begin(0x77);
   if (!bme.begin(0x77)) Serial.println("Error!");
   client.setServer(mqtt_server, mqtt_port);
@@ -51,20 +50,13 @@ void setup() {
 }
 
 void loop() {
-     if (!mq2.isCalibrated() && mq2.heatingCompleted()) {
-    // выполняем калибровку датчика на чистом воздухе
-    mq2.calibrate();
-    // выводим сопротивление датчика в чистом воздухе (Ro) в serial-порт
-    Serial.print("Ro = ");
-    Serial.println(mq2.getRo());
-  }
-     if (mq2.isCalibrated() && mq2.heatingCompleted()) {
+
+
     hydrogen = mq2.readHydrogen();
     smoke = mq2.readSmoke();
     methane = mq2.readMethane();
     LPG = mq2.readLPG();
     ratio = mq2.readRatio();
-  }
   mqtt_connect(); 
   client.loop();
   //Публикация сообещния
@@ -107,7 +99,7 @@ void otladka() {
   Serial.print("Ro = ");
   Serial.println(mq2.getRo());
 
-  if (mq2.isCalibrated() && mq2.heatingCompleted()) {
+  
     // выводим отношения текущего сопротивление датчика
     // к сопротивлению датчика в чистом воздухе (Rs/Ro)
     Serial.print("Ratio: ");
@@ -127,8 +119,7 @@ void otladka() {
     Serial.println(" ppm ");
     //delay(100);
     Serial.print("Calibrated: "); Serial.println(mq2.isCalibrated());
-    Serial.print("Heating Completed: "); Serial.println(mq2.heatingCompleted());
-  }
+  
 }
 
 void wifi() {
